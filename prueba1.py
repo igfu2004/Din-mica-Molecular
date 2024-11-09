@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-
 import numpy as np
-import matplotlib as plt
-import os
+import matplotlib.pyplot as plt
 from random import uniform as uf
+from random import randint as ri
 
 
 class Disco:
@@ -14,6 +13,7 @@ class Disco:
         self.posiciony = laposiciony
         self.velocidadx = lavelocidadx
         self.velocidady = lavelocidady
+        self.color = [0,0,1]
         #posicion de los discos para crear el histograma
         self.arrayposicionx = np.array([])
         self.arrayposiciony = np.array([])
@@ -55,6 +55,7 @@ class Grilla:
     self.divisionX = creacion_grilla(self,xmax,ldiscos)[0]
     self.divisionY = creacion_grilla(self,ymax,ldiscos)[0]
     self.dist_entre_separX = creacion_grilla(self,xmax,ldiscos)[1]
+
 
 #'controlador'
 def nueva_posicion(disco, dt):
@@ -157,9 +158,15 @@ def sistema_colision_forzada_pares(disc1,disc2,cambio_velocidad,n,newt):
   return disc1,disc2
 
 
-def acomodo_inicial_discos(radio, masa, velMin, velMax, caja, num_discos): #esta es una función para el caso en el
+def acomodo_inicial_discos(radio, masa, velMin, velMax, caja, num_discos, color = False): #esta es una función para el caso en el
                                                                             #que se quiera hacer un acomodo de posiciones
                                                                             #para un numero por definir de discos
+  def colores():
+    colors = [[1,0,0],[0,1,0],[0,0,1],[1,1,0],[1,0,1],[0,1,1],[0,0,0]]
+    new_color_number = ri(0,len(colors)-1)
+    new_color = colors[new_color_number]
+    return new_color
+
   ldiscos = []
   if num_discos == 1:
     posX = caja.longitudx/2
@@ -184,6 +191,7 @@ def acomodo_inicial_discos(radio, masa, velMin, velMax, caja, num_discos): #esta
         num_subdivisiony = int((num_discos-1)/2)
         posiciones_x = np.linspace(radio,caja.longitudx-radio,num_subdivisionx)
         posiciones_y = np.linspace(radio,caja.longitudy-radio,num_subdivisiony)
+      contador = 0
       for i in range(num_subdivisionx):
         for j in range(num_subdivisiony):
           posX = posiciones_x[i]
@@ -191,9 +199,12 @@ def acomodo_inicial_discos(radio, masa, velMin, velMax, caja, num_discos): #esta
           veloX = uf(velMin, velMax)
           veloY = uf(velMin, velMax)
           ldiscos.append(Disco(radio, masa, posiciones_x[i], posiciones_y[j] ,veloX, veloY))
+          if color == True:
+            ldiscos[contador].color = colores()
+          contador += 1
 
-      else:
-        print("El numero de discos debe ser un entero")
+    else:
+      print("El numero de discos debe ser un entero")
 
   return ldiscos
 
@@ -201,12 +212,8 @@ def acomodo_inicial_discos(radio, masa, velMin, velMax, caja, num_discos): #esta
 def graf_discos(discos,caja,fotograma,grilla):
   plt.style.use('_mpl-gallery')
   fig, ax = plt.subplots()
-  colors = [[1,0,0],[0,1,0],[0,0,1],[1,1,0],[1,0,1],[0,1,1]]
   for i in range(len(discos)):
-    r = np.round(np.random.rand(),1)
-    g = np.round(np.random.rand(),1)
-    b = np.round(np.random.rand(),1)
-    circ = plt.Circle((discos[i].posicionx, discos[i].posiciony), discos[i].radio,color=colors[i])
+    circ = plt.Circle((discos[i].posicionx, discos[i].posiciony), discos[i].radio,color=discos[i].color)
     ax.add_patch(circ)
   ax.set(xlim=(0, caja.longitudx), xticks=grilla.divisionX,xticklabels="",ylim=(0, caja.longitudy),yticks=grilla.divisionY,yticklabels="")
   #falta guardarlo en una carpeta, por el momento solo es para ver si se grafica bien
@@ -251,19 +258,15 @@ def main():
 
     ############## Esta función sirve para inicializar los discos previendo que no se sobrepongan al crearse, y está abierto a cualquier número de discos ##############
 
-    discos = acomodo_inicial_discos(radio, masa, -velomax, velomax, caja, numero_discos)
+    discos = acomodo_inicial_discos(radio, masa, -velomax, velomax, caja, numero_discos, True)
 
     ############## Este código marcado entre comillas triples es para la inicialización de los discos en posiciones establecidas, pero depende de hacerlo a mano ##############
     ############inicializacion de los discos por medio de unas posicones conocidas pero con velocidades aleatorias##################################
 
     """posicionX = [0.1, 0.1, 0.9, 0.9]
     posicionY = [0.1, 0.9, 0.1, 0.9]
-    #posicionX = [0.4, 0.4]
-    #posicionY = [0.4, 0.7]
-    velocidadX = [uf(-0.10,0.10),uf(-0.10,0.10),uf(-0.10,0.10),uf(-0.10,0.10)]
-    velocidadY = [uf(-0.10,0.10),uf(-0.10,0.10),uf(-0.10,0.10),uf(-0.10,0.10)]
-    #velocidadX = [0,0]
-    #velocidadY = [0.10,-0.10]
+    velocidadX = [uf(-velomax,velomax),uf(-velomax,velomax),uf(-velomax,velomax),uf(-velomax,velomax)]
+    velocidadY = [uf(-velomax,velomax),uf(-velomax,velomax),uf(-velomax,velomax),uf(-velomax,velomax)]
     for i in range(numero_discos):
       discos.append(Disco(radio, masa, posicionX[i], posicionY[i] ,velocidadX[i], velocidadY[i]))"""
     ################################################################################################################################################
@@ -287,7 +290,6 @@ def main():
         #verificación de colisiones con las paredes
         discos[i] = deteccion_colision_pared(discos[i],caja.longitudx,caja.longitudy,n,newt)
       #verificacion de colisiones entre los discos
-      #discos = deteccion_colision_pares(grilla,discos,cambio_velocidad_colision_pares,n,newt,sistema_colision_continua_pares)
       discos = deteccion_colision_pares(grilla,discos,cambio_velocidad_colision_pares,n,newt,sistema_colision_forzada_pares)
       graf_discos(discos,caja,0,grilla)
     histo_discos(discos,timearray,tmax,newt)
