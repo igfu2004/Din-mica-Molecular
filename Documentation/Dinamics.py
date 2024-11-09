@@ -427,3 +427,20 @@ def sistema_colision_forzada_pares(disc1,disc2,cambio_velocidad,n,newt):
   #Actualización de la velocidad
     disc1,disc2 = cambio_velocidad(disc1,disc2)
     return disc1,disc2
+
+
+def crear_video(fps):
+    """`crear_video(fps)`
+
+    Esta función crea un video del movimiento de las partículas en la grilla.
+
+   Args:
+        fps (int): Los fps del video.
+    """
+
+    path = os.getcwd()
+    filenames = sorted(glob.glob(os.path.join(path, "fotograma*.png")))
+    clip = ImageSequenceClip(filenames, fps=fps)
+    clip.write_videofile(f"{path}/video_colision.mp4", fps=fps)
+    for filename in glob.glob(os.path.join(path, "fotograma*.png")):
+        os.remove(filename)

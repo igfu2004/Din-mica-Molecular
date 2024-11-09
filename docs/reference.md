@@ -32,4 +32,6 @@ A continuación las funciones principales del programaA continuación las funcio
 
 ###::: Documentation.Dinamics.sistema_colision_forzada_pares
 
+###::: Documentation.Dinamics.crear_video
+
 
