@@ -5,7 +5,9 @@ from random import uniform as uf
 
 class Disco:
     def __init__(self, elradio, lamasa, laposicionx, laposiciony, lavelocidadx, lavelocidady):
-        """Esta clase se encarga de generar los componentes necesarios para crear cada disco.
+        """`__init__(self, elradio, lamasa, laposicionx,           laposiciony, lavelocidadx, lavelocidady)`
+
+        Esta clase se encarga de generar los componentes necesarios para crear cada disco.
 
         Args:
             elradio (float): Un valor que repesenta la medida del radio de la particula.
@@ -14,6 +16,8 @@ class Disco:
             laposiciony (float): Un valor que representa el        componente en el eje y de la posición de la partícula.
             lavelocidadx (float): Un valor que representa el        componente en el eje x de la velocidad de la partícula.
             lavelocidady (float): Un valor que representa el        componente en el eje y de la velocidad de la partícula.
+            self.radio (float): Un valor que repesenta la medida  del radio de la particula.
+            lamasa (int): Un valor que representa la masa de   la particula
         """
         self.radio = elradio
         self.masa = lamasa
@@ -21,10 +25,13 @@ class Disco:
         self.posiciony = laposiciony
         self.velocidadx = lavelocidadx
         self.velocidady = lavelocidady
+        self.color = [0,0,1]
         self.arrayposicionx = np.array([self.posicionx])
 
     def right(self):
-        """ Esta función miembro determina la frontera derecha de la partícula, para ello hereda los atributos del constructor.
+        """`right(self)`
+
+        Esta función miembro determina la frontera derecha de la partícula, para ello hereda los atributos del constructor.
 
         Examples:
             >>> Disco(1,1,1,1,1,1).right()
@@ -41,7 +48,9 @@ class Disco:
 
     #función miembro para obtener el límite izquierdo
     def left(self):
-        """ Esta función miembro determina la frontera izquierda de la partícula, para ello hereda los atributos del constructor.
+        """ left(self)`
+
+        Esta función miembro determina la frontera izquierda de la partícula, para ello hereda los atributos del constructor.
 
         Examples:
             >>> Disco(1,1,1,1,1,1).left()
@@ -59,7 +68,9 @@ class Disco:
 
     #funcion miembro para obtener el límite superior
     def top(self):
-        """ Esta función miembro determina la frontera superior de la partícula, para ello hereda los atributos del constructor.
+        """ `top(self)`
+
+        Esta función miembro determina la frontera superior de la partícula, para ello hereda los atributos del constructor.
 
         Examples:
             >>> Disco(1,1,1,1,1,1).top()
@@ -77,7 +88,9 @@ class Disco:
 
     #funcion miembro para obtener el límite inferior
     def bottom(self):
-        """ Esta función miembro determina la frontera inferior de la partícula, para ello hereda los atributos del            constructor.
+        """`bottom(self)`
+
+        Esta función miembro determina la frontera inferior de la partícula, para ello hereda los atributos del            constructor.
 
         Examples:
             >>> Disco(1,1,1,1,1,1).bottom()
@@ -96,7 +109,9 @@ class Disco:
 
 class Box:
     def __init__(self,lalongitudX,lalongitudY):
-        """Esta clase se encarga de generar una caja donde se colocará la grilla.
+        """`__init__(self,lalongitudX,lalongitudY)`
+
+        Esta clase se encarga de generar una caja donde se colocará la grilla.
 
         Args:
             lalongitudX (int): Un valor que repesenta el largo de la caja.
@@ -109,7 +124,9 @@ class Box:
 
 class Grilla:
     def __init__(self,xmax,ymax,ldiscos):
-        """Esta clase se encarga de generar una grilla donde colocar a las partículas.
+        """`__init__(self,xmax,ymax,ldiscos)`
+
+        Esta clase se encarga de generar una grilla donde colocar a las partículas.
 
         Args:
             xmax (int): Un valor que repesenta el valor maximo de x.
@@ -140,7 +157,8 @@ class Grilla:
 
 
 def nueva_posicion(disco, dt):
-    """
+    """`nueva_posicion(disco, dt)`
+
     Esta función se encarga de ubicar la nueva posición de cada disco en la grilla.
 
     Args:
@@ -158,7 +176,8 @@ def nueva_posicion(disco, dt):
 
 
 def deteccion_colision_pared(disco,lx,ly,n,newt):
-    """
+    """`deteccion_colision_pared(disco,lx,ly,n,newt)`
+
     Esta función se encarga de detectar si se esta llevando a cabo una colisión con alguna pared, para ello determina el valor del tiempo en el siguiente       fotograma, y compara la posición del disco con la de la pared para determinar   si colisionaran o no.
 
     Args:
@@ -212,7 +231,8 @@ def deteccion_colision_pared(disco,lx,ly,n,newt):
 
 
 def acomodo_inicial_discos(radio, masa, velMin, velMax, caja, num_discos):
-    """
+    """`acomodo_inicial_discos(radio, masa, velMin, velMax,        caja, num_discos)`
+
     Esta función se encarga de generar el acomodo inicial de las partículas en la grilla.
 
     Args:
@@ -263,14 +283,15 @@ def acomodo_inicial_discos(radio, masa, velMin, velMax, caja, num_discos):
     return ldiscos
 
 def graf_discos(discos,caja,fotograma,grilla):
-    """
+    """`graf_discos(discos,caja,fotograma,grilla)`
+
     Esta función se encarga de graficar cada frame.
 
     Args:
         discos (Disco): Son todas las caracteristicas de los discos inicializadas en la clase Disco.
         caja (Box): Contiene las caracteristicas de la caja que almacena la grilla.
         fotograma (int): (No se uso en la función revisar en versiones posteriores si se elimina).
-
+        grilla (Grilla): Contiene la información de la grilla.
     """
     plt.style.use('_mpl-gallery')
     fig, ax = plt.subplots()
@@ -289,7 +310,8 @@ def graf_discos(discos,caja,fotograma,grilla):
     plt.close()
 
 def histo_discos(discos,tiempos,tmax,newt):
-    """
+    """`histo_discos(discos,tiempos,tmax,newt)`
+
     Esta función crea un histograma de las posiciones de los centros a lo largo del eje x.
 
     Args:
@@ -317,4 +339,91 @@ def histo_discos(discos,tiempos,tmax,newt):
                ylim=(0, 1), yticks=np.arange(0, 1))
 
         plt.show()
+def cambio_velocidad_colision_pares(disco1,disco2):
+    """`cambio_velocidad_colision_pares(disco1,disco2)`
 
+    Esta función se encarga de determinar la nueva velocidad de los discos después de que colisionan.
+
+    Args:
+        disco1 (Disco): Toma las caracterísiticas de uno de los discos que esta colisionando.
+        disco2 (Disco): Toma las caracterísiticas de uno de los discos que      esta colisionando.
+
+    Returns:
+        disco1 (Disco): Retorna las caracteristicas de este disco actualizadas.
+        disco2 (Disco): Retorna las caracteristicas de este disco               actualizadas.
+   """
+    v1x = (disco1.velocidadx*(disco1.masa - disco2.masa) + 2*disco2.masa*disco2.velocidadx)/(disco1.masa + disco2.masa)
+    v1y = (disco1.velocidady*(disco1.masa - disco2.masa) + 2*disco2.masa*disco2.velocidady)/(disco1.masa + disco2.masa)
+    v2x = (disco2.velocidadx*(disco2.masa - disco1.masa) + 2*disco1.masa*disco1.velocidadx)/(disco1.masa + disco2.masa)
+    v2y = (disco2.velocidady*(disco2.masa - disco1.masa) + 2*disco1.masa*disco1.velocidady)/(disco1.masa + disco2.masa)
+
+    disco1.velocidadx = v1x
+    disco1.velocidady = v1y
+    disco2.velocidadx = v2x
+    disco2.velocidady = v2y
+
+    return disco1, disco2
+
+
+def deteccion_colision_pares(grilla,ldiscos,cambio_velocidad,n,newt,manejo_colision):
+    """ `deteccion_colision_pares(grilla,ldiscos,cambio_velocidad,n,newt,            manejo_colision)`
+
+    Esta función se encarga de la verificación de posiciones en un grilla y en sus vecinas inmediatas        sobre el eje x para determinar si se esta llevando a cabo una colisión entre partículas.
+
+    Args:
+        grilla (Grilla): Contiene la información de la grilla.
+        ldiscos (list): Una lista que contiene la información de los discos.
+        cambio_velocidad (function): Llama a una función para determinar el cambio de velocidades causado por la colisión.
+        n (int): representa el valor del momento actual.
+        newt (float): Representa 1 dividido entre la cantidad de FPS.
+        manejo_colision (function): Llama a una función para el manejo de la colisión.
+
+    Returns:
+        ldiscos (list): Una lista que contiene la información actulizada de los discos.
+    """
+
+    #verificación de posiciones en un grilla y en sus vecinas inmediatas sobre el eje x
+    for j in grilla.divisionX:
+        discos_en_grilla = []
+        for i in range(len(ldiscos)):
+            if abs(ldiscos[i].posicionx - j) < (2*grilla.dist_entre_separX):
+                discos_en_grilla.append(ldiscos[i])
+
+    #descartamos los discos que no se sobreponen en X
+    for i in discos_en_grilla:
+        for k in discos_en_grilla:
+            if i == k:
+                pass
+            else:
+                dist = np.sqrt(np.square(i.posicionx - k.posicionx) + np.square(i.posiciony - k.posiciony))
+                if dist <= i.radio + k.radio:
+                    i,k = manejo_colision(i,k,cambio_velocidad,n,newt)
+    return ldiscos
+
+
+
+def sistema_colision_forzada_pares(disc1,disc2,cambio_velocidad,n,newt):
+    """`sistema_colision_forzada_pares(disc1,disc2,cambio_velocidad,n,newt)`
+
+    Esta función se encarga de actualizar la posición de las partículas para evitar que los discos se fucionen.
+
+    Args:
+        disco1 (Disco): Toma las caracterísiticas de uno de los discos que esta colisionando.
+        disco2 (Disco): Toma las caracterísiticas de uno de los discos que      esta colisionando.
+        cambio_velocidad (function): Llama a una función para determinar el     cambio de velocidades causado por la colisión.
+        n (int): representa el valor del momento actual.
+        newt (float): Representa 1 dividido entre la cantidad de FPS.
+        manejo_colision (function): Llama a una función para el manejo de la    colisión.
+
+    Returns:
+        disco1 (Disco): Retorna las caracteristicas de este disco actualizadas.
+        disco2 (Disco): Retorna las caracteristicas de este disco               actualizadas.
+    """
+    #Actualización de la posicion para evitar que el sistema fusione los discos
+    disc1.posicionx = disc1.arrayposicionx[n-1]
+    disc1.posiciony = disc1.arrayposiciony[n-1]
+    disc2.posicionx = disc2.arrayposicionx[n-1]
+    disc2.posiciony = disc2.arrayposiciony[n-1]
+  #Actualización de la velocidad
+    disc1,disc2 = cambio_velocidad(disc1,disc2)
+    return disc1,disc2

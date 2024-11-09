@@ -1,29 +1,35 @@
-#Clases y funciones principales 
+#Clases y Funciones principales
 A contnuación se presentan las clases y funciones principales del prgorgrama.
 
-`Class Disco`
-::: Documentation.Dinamics.Disco
+##`Class Disco`
+###::: Documentation.Dinamics.Disco.__init__
+###::: Documentation.Dinamics.Disco.bottom
+###::: Documentation.Dinamics.Disco.left
+###::: Documentation.Dinamics.Disco.right
+###::: Documentation.Dinamics.Disco.top
 
-`Class Box`
-::: Documentation.Dinamics.Box
+##`Class Box`
+###::: Documentation.Dinamics.Box.__init__
 
-`Class Grilla`
-::: Documentation.Dinamics.Grilla
+##`Class Grilla`
+###::: Documentation.Dinamics.Grilla.__init__
 
-`nueva_posicion(disco, dt)`
-::: Documentation.Dinamics.nueva_posicion
+##Funciones principales del programa 
+A continuación las funciones principales del programaA continuación las funciones principales del programa
+###::: Documentation.Dinamics.nueva_posicion
 
-`deteccion_colision_pared(disco,lx,ly,n,newt)`
-::: Documentation.Dinamics.deteccion_colision_pared
+###::: Documentation.Dinamics.deteccion_colision_pared
 
-`acomodo_inicial_discos(radio, masa, velMin, velMax, caja, num_discos)`
-::: Documentation.Dinamics.acomodo_inicial_discos
+###::: Documentation.Dinamics.acomodo_inicial_discos
 
-`graf_discos(discos,caja,grilla)`
-::: Documentation.Dinamics.graf_discos
+###::: Documentation.Dinamics.graf_discos
 
-`histo_discos(discos,tiempos,tmax,newt)`
-::: Documentation.Dinamics.histo_discos
+###::: Documentation.Dinamics.histo_discos
 
+###::: Documentation.Dinamics.cambio_velocidad_colision_pares
+
+###::: Documentation.Dinamics.deteccion_colision_pares
+
+###::: Documentation.Dinamics.sistema_colision_forzada_pares
 
 
