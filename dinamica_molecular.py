@@ -215,7 +215,7 @@ def graf_discos(discos,caja,fotograma,grilla):
     r = np.round(np.random.rand(),1)
     g = np.round(np.random.rand(),1)
     b = np.round(np.random.rand(),1)
-    circ = plt.Circle((discos[i].posicionx, discos[i].posiciony), discos[i].radio,color=colors[i])
+    circ = plt.Circle((discos[i].posicionx, discos[i].posiciony), discos[i].radio,color=discos[i].color)
     ax.add_patch(circ)
 
   ax.set(xlim=(0, caja.longitudx), xticks=grilla.divisionX,xticklabels="",ylim=(0, caja.longitudy),yticks=grilla.divisionY,yticklabels="")
@@ -270,8 +270,9 @@ def main():
     #velomax = 0.005
     velomax = 0.002 ######probar otras velocidades
 
-    discos = acomodo_inicial_discos(radio, masa, -velomax, velomax, caja, numero_discos)
-
+    discos = acomodo_inicial_discos(radio, masa, -velomax, velomax, caja, numero_discos, True)
+    
+    ########## Creacion del objeto grilla para la detección de colisiones ##########
     grilla = Grilla(caja.longitudx,caja.longitudy,discos)
 
     #evolucion temporal
