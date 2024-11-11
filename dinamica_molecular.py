@@ -3,6 +3,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from random import uniform as uf
+from random import randint as ri
 from moviepy.editor import *
 import glob
 import os
@@ -13,8 +14,7 @@ class Disco:
         self.masa = lamasa
         self.posicionx = laposicionx
         self.posiciony = laposiciony
-        self.velocidadx = lavelocidadx
-        self.velocidady = lavelocidady
+        self.velocidad = np.array([lavelocidadx,lavelocidady])
         self.color = [0,0,1]
         #posicion de los discos para crear el histograma
         self.arrayposicionx = np.array([])
@@ -62,8 +62,8 @@ class Grilla:
 def nueva_posicion(disco, dt):
     #funcion para una nueva posicion del disco al moverse
     #con la ec. x_f = x_0 + vt
-    disco.posicionx += disco.velocidadx * dt
-    disco.posiciony += disco.velocidady * dt
+    disco.posicionx += disco.velocidad[0] * dt
+    disco.posiciony += disco.velocidad[1] * dt
     disco.arrayposicionx = np.append(disco.arrayposicionx,disco.posicionx)
     disco.arrayposiciony = np.append(disco.arrayposiciony,disco.posiciony)
     return disco
@@ -77,52 +77,81 @@ def deteccion_colision_pared(disco,lx,ly,n,newt):
   #Buscamos el tiempo t entre el intervalo de [0,1] en el que se causa la colisión con la pared
 
   posicioninicial = disco.right()
-  posicionfinal = disco.right() + disco.velocidadx*tprox
+  posicionfinal = disco.right() + disco.velocidad[0]*tprox
   if posicionfinal >= lx:
     t = (lx - disco.right())/(posicionfinal - disco.right())
     x = disco.right() + t*(posicionfinal-disco.right())
     disco.posicionx = x - disco.radio
-    disco.velocidadx *= -1
+    disco.velocidad[0] *= -1
 
   posicioninicial = disco.left()
-  posicionfinal = disco.left() + disco.velocidadx*tprox
+  posicionfinal = disco.left() + disco.velocidad[0]*tprox
   if posicionfinal <= 0:
     t = -1*disco.left()/(posicionfinal - disco.left())
     x = disco.left() + t*(posicionfinal-disco.left())
     disco.posicionx = x + disco.radio
-    disco.velocidadx *= -1
+    disco.velocidad[0] *= -1
 
   posicioninicial = disco.top()
-  posicionfinal = disco.top() + disco.velocidady*tprox
+  posicionfinal = disco.top() + disco.velocidad[1]*tprox
   if posicionfinal >= ly:
     t = (ly - disco.top())/(posicionfinal - disco.top())
     y = disco.top() + t*(posicionfinal-disco.top())
     disco.posiciony = y - disco.radio
-    disco.velocidady *= -1
+    disco.velocidad[1] *= -1
 
   posicioninicial = disco.bottom()
-  posicionfinal = posicioninicial + disco.velocidady*tprox
+  posicionfinal = posicioninicial + disco.velocidad[1]*tprox
   if posicionfinal <= 0:
     t = -1*disco.bottom()/(posicionfinal - disco.bottom())
     y = disco.bottom() + t*(posicionfinal - disco.bottom())
     disco.posiciony = y + disco.radio
-    disco.velocidady *= -1
+    disco.velocidad[1] *= -1
 
   return disco
-
 
 #función para el cambio en la velocidad de los discos que colisionan
 def cambio_velocidad_colision_pares(disco1,disco2):
 
-    v1x = (disco1.velocidadx*(disco1.masa - disco2.masa) + 2*disco2.masa*disco2.velocidadx)/(disco1.masa + disco2.masa)
-    v1y = (disco1.velocidady*(disco1.masa - disco2.masa) + 2*disco2.masa*disco2.velocidady)/(disco1.masa + disco2.masa)
-    v2x = (disco2.velocidadx*(disco2.masa - disco1.masa) + 2*disco1.masa*disco1.velocidadx)/(disco1.masa + disco2.masa)
-    v2y = (disco2.velocidady*(disco2.masa - disco1.masa) + 2*disco1.masa*disco1.velocidady)/(disco1.masa + disco2.masa)
+    #Buscamos el vector entre el centro de los discos
+    n = np.array([disco2.posicionx - disco1.posicionx, disco2.posiciony - disco1.posiciony])
 
-    disco1.velocidadx = v1x
-    disco1.velocidady = v1y
-    disco2.velocidadx = v2x
-    disco2.velocidady = v2y
+    #Normalizammos el vector:
+    nu = n/np.linalg.norm(n)
+
+    #Buscamos el vector tangente unitario a los discos, el cual es perpendicular al vector normal.
+    vect = np.array([-1*nu[1],-nu[0]])
+
+    #Buscamos el componente paralelo a nu y vect de las velocidades iniciales, para asi tenerlos en terminos de nu y vect
+
+    v1n = np.dot(disco1.velocidad, nu)
+    v2n = np.dot(disco2.velocidad, nu)
+    v1t = np.dot(disco1.velocidad, vect)
+    v2t = np.dot(disco2.velocidad, vect)
+
+    #notese que al haber hecho el analisis anterior, la colision queda como de una sola dimension, puesto que lo que se esta
+    #haciendo es hacer un cambio de sistema de coordenadas realmente, para asi tener que los componentes de la velocidad involucrados
+    #en la colision sean en una sola dimension, y asi aplicar la siguiente formula.
+
+    v1nfinal = (v1n*(disco1.masa - disco2.masa) + 2*disco2.masa*v2n)/(disco1.masa + disco2.masa)
+    v2nfinal = (v2n*(disco2.masa - disco1.masa) + 2*disco1.masa*v1n)/(disco1.masa + disco2.masa)
+
+    #Estos valores son escalares, por lo que buscamos las proyecciones sobre los vectores nu y vect
+
+    v1nPrima = v1nfinal*nu
+    v2nPrima = v2nfinal*nu
+    v1tPrima = v1t*vect
+    v2tPrima = v2t*vect
+
+    #Por ultimo, nos queda un vector final que es la suma de los vectores paralelos a nu y vect que esta en sistema de coordenadas cartesiano
+
+    v1Prima = v1nPrima + v1tPrima
+    v2Prima = v2nPrima + v2tPrima
+
+    disco1.velocidad[0] = v1Prima[0]
+    disco1.velocidad[1] = v1Prima[1]
+    disco2.velocidad[0] = v2Prima[0]
+    disco2.velocidad[1] = v2Prima[1]
 
     return disco1, disco2
 
@@ -166,16 +195,50 @@ def acomodo_inicial_discos(radio, masa, velMin, velMax, caja, num_discos, color=
     return new_color
 
   ldiscos = []
-  if num_discos == 1:
+
+  if num_discos <= 0:
+    print("El numero de discos debe ser mayor a 0.")
+
+  elif num_discos == 1:
     posX = caja.longitudx/2
     posY = caja.longitudy/2
     veloX = uf(velMin, velMax)
     veloY = uf(velMin, velMax)
     ldiscos.append(Disco(radio, masa, posX, posY ,veloX, veloY))
 
+  elif num_discos == 2:
+    posX1 = caja.longitudx/4
+    posX2 = caja.longitudx/4*3
+    posY = caja.longitudy/2
+    veloX1 = uf(velMin, velMax)
+    veloY1 = uf(velMin, velMax)
+    veloX2 = uf(velMin, velMax)
+    veloY2 = uf(velMin, velMax)
+    ldiscos.append(Disco(radio, masa, posX1, posY ,veloX1, veloY1))
+    ldiscos.append(Disco(radio, masa, posX2, posY ,veloX2, veloY2))
+    if color == True:
+      ldiscos[0].color = colores()
+      ldiscos[1].color = colores()
 
-  elif num_discos <= 0:
-    print("El numero de discos debe ser mayor a 0.")
+  elif num_discos == 3:
+    posX1 = caja.longitudx/4
+    posX2 = caja.longitudx/4*3
+    posX3 = caja.longitudx/2
+    posY1 = caja.longitudy/4
+    posY2 = caja.longitudy/4*3
+    veloX1 = uf(velMin, velMax)
+    veloY1 = uf(velMin, velMax)
+    veloX2 = uf(velMin, velMax)
+    veloY2 = uf(velMin, velMax)
+    veloX3 = uf(velMin, velMax)
+    veloY3 = uf(velMin, velMax)
+    ldiscos.append(Disco(radio, masa, posX1, posY1, veloX1, veloY1))
+    ldiscos.append(Disco(radio, masa, posX2, posY1, veloX2, veloY2))
+    ldiscos.append(Disco(radio, masa, posX3, posY2, veloX3, veloY3))
+    if color == True:
+      ldiscos[0].color = colores()
+      ldiscos[1].color = colores()
+      ldiscos[2].color = colores()
 
   else:
     if type(num_discos) == int:
@@ -187,8 +250,8 @@ def acomodo_inicial_discos(radio, masa, velMin, velMax, caja, num_discos, color=
       else:
         num_subdivisionx = int((num_discos+1)/2)
         num_subdivisiony = int((num_discos-1)/2)
-        posiciones_x = np.linspace(radio,caja.longitudx-radio,num_subdivisionx)
-        posiciones_y = np.linspace(radio,caja.longitudy-radio,num_subdivisiony)
+        posiciones_x = np.linspace(0.02+radio,caja.longitudx-radio-0.02,num_subdivisionx)
+        posiciones_y = np.linspace(0.02+radio,caja.longitudy-radio-0.02,num_subdivisiony)
       contador = 0
       for i in range(num_subdivisionx):
         for j in range(num_subdivisiony):
@@ -200,21 +263,20 @@ def acomodo_inicial_discos(radio, masa, velMin, velMax, caja, num_discos, color=
           if color == True:
             ldiscos[contador].color = colores()
           contador += 1
+          if contador == num_discos:
+            break
+        if contador == num_discos:
+          break
 
     else:
       print("El numero de discos debe ser un entero")
 
   return ldiscos
-
 def graf_discos(discos,caja,fotograma,grilla):
   path = os.getcwd()
   plt.style.use('_mpl-gallery')
   fig, ax = plt.subplots()
-  colors = [[1,0,0],[0,1,0],[0,0,1],[1,1,0],[1,0,1],[0,1,1]]
   for i in range(len(discos)):
-    r = np.round(np.random.rand(),1)
-    g = np.round(np.random.rand(),1)
-    b = np.round(np.random.rand(),1)
     circ = plt.Circle((discos[i].posicionx, discos[i].posiciony), discos[i].radio,color=discos[i].color)
     ax.add_patch(circ)
 
