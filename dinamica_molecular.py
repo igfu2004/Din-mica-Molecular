@@ -68,16 +68,13 @@ def nueva_posicion(disco, dt):
     disco.arrayposiciony = np.append(disco.arrayposiciony,disco.posiciony)
     return disco
 
-def deteccion_colision_pared(disco,lx,ly,n,newt):
-
-  #Calculamos el tiempo hasta el próximo fotograma
-  tprox = (n+1)*newt
+def deteccion_colision_pared(disco,lx,ly,newt):
 
   #Esta parte viene de realizar una parametrización de la trayectoria del disco por medio de la ecuación paramétrica de la recta.
   #Buscamos el tiempo t entre el intervalo de [0,1] en el que se causa la colisión con la pared
 
   posicioninicial = disco.right()
-  posicionfinal = disco.right() + disco.velocidad[0]*tprox
+  posicionfinal = disco.right() + disco.velocidad[0]*newt
   if posicionfinal >= lx:
     t = (lx - disco.right())/(posicionfinal - disco.right())
     x = disco.right() + t*(posicionfinal-disco.right())
@@ -85,7 +82,7 @@ def deteccion_colision_pared(disco,lx,ly,n,newt):
     disco.velocidad[0] *= -1
 
   posicioninicial = disco.left()
-  posicionfinal = disco.left() + disco.velocidad[0]*tprox
+  posicionfinal = disco.left() + disco.velocidad[0]*newt
   if posicionfinal <= 0:
     t = -1*disco.left()/(posicionfinal - disco.left())
     x = disco.left() + t*(posicionfinal-disco.left())
@@ -93,7 +90,7 @@ def deteccion_colision_pared(disco,lx,ly,n,newt):
     disco.velocidad[0] *= -1
 
   posicioninicial = disco.top()
-  posicionfinal = disco.top() + disco.velocidad[1]*tprox
+  posicionfinal = disco.top() + disco.velocidad[1]*newt
   if posicionfinal >= ly:
     t = (ly - disco.top())/(posicionfinal - disco.top())
     y = disco.top() + t*(posicionfinal-disco.top())
@@ -101,7 +98,7 @@ def deteccion_colision_pared(disco,lx,ly,n,newt):
     disco.velocidad[1] *= -1
 
   posicioninicial = disco.bottom()
-  posicionfinal = posicioninicial + disco.velocidad[1]*tprox
+  posicionfinal = posicioninicial + disco.velocidad[1]*newt
   if posicionfinal <= 0:
     t = -1*disco.bottom()/(posicionfinal - disco.bottom())
     y = disco.bottom() + t*(posicionfinal - disco.bottom())
@@ -330,7 +327,7 @@ def main():
     masa = 1
     radio = 0.05
     #velomax = 0.005
-    velomax = 0.002 ######probar otras velocidades
+    velomax = 0.1 ######probar otras velocidades
 
     discos = acomodo_inicial_discos(radio, masa, -velomax, velomax, caja, numero_discos, True)
     
@@ -340,7 +337,7 @@ def main():
     #evolucion temporal
     FPS = 60
     newt = 1/FPS
-    tmax = 10
+    tmax = 5
     tprima = 0
     timearray = np.zeros(tmax*FPS)
     fotograma = 0
@@ -352,9 +349,9 @@ def main():
       timearray[n] = tprima
       #actualizacion de las posiciones de los discos
       for i in range(numero_discos):
-        discos[i] = nueva_posicion(discos[i],tprima)
+        discos[i] = nueva_posicion(discos[i],newt)
         #verificación de colisiones con las paredes
-        discos[i] = deteccion_colision_pared(discos[i],caja.longitudx,caja.longitudy,n,newt)
+        discos[i] = deteccion_colision_pared(discos[i],caja.longitudx,caja.longitudy,newt)
       #verificacion de colisiones entre los discos
       discos = deteccion_colision_pares(grilla,discos,cambio_velocidad_colision_pares,n,newt,sistema_colision_forzada_pares)
       graf_discos(discos,caja,fotograma,grilla)
