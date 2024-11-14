@@ -330,7 +330,7 @@ def main():
     velomax = 0.1 ######probar otras velocidades
 
     discos = acomodo_inicial_discos(radio, masa, -velomax, velomax, caja, numero_discos, True)
-    
+
     ########## Creacion del objeto grilla para la detección de colisiones ##########
     grilla = Grilla(caja.longitudx,caja.longitudy,discos)
 
