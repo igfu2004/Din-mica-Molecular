@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import numpy as np
+from random import randint as ri
 
 class Disco:
     """
@@ -35,6 +36,7 @@ class Disco:
         #posicion de los discos para crear el histograma
         self.arrayposicionx = np.array([])
         self.arrayposiciony = np.array([])
+    
     #Variacion de las fronteras
     #función miembro para obtener el límite derecho
     def right(self):
@@ -51,7 +53,13 @@ class Disco:
     #funcion miembro para obtener el límite inferior
     def bottom(self):
         return self.posiciony - self.radio
-
+    
+    #funcion para cambiar el color del disco de manera aleatoria
+    def colores(self):
+      colors = [[1,0,0],[0,1,0],[0,0,1],[1,1,0],[1,0,1],[0,1,1],[0,0,0]]
+      new_color_number = ri(0,len(colors)-1)
+      new_color = colors[new_color_number]
+      return new_color
 
 class Box:
     def __init__(self,lalongitudX,lalongitudY):
@@ -59,26 +67,17 @@ class Box:
       self.longitudy = lalongitudY
 
 class Grilla:
-  def __init__(self,xmax,ymax,ldiscos):
+  def __init__(self,xmax,ymax,radio):
     self.xmax = xmax
-    self.subdivisionesx = int(xmax/(2*ldiscos[0].radio))
-    self.subdivisionesy = int(ymax/(2*ldiscos[0].radio))
+    self.ymax = ymax
+    self.subdivisionesx = int(xmax/(2*radio)) #Cantidad de subdivisiones en el eje x
+    self.subdivisionesy = int(ymax/(2*radio)) #Cantidad de subdivisiones en el eje y
 
     def creacion_grilla(self,xmax,ldiscos):
       divisionX = np.linspace(0,xmax,self.subdivisionesx)
       divisionY = np.linspace(0,ymax,self.subdivisionesy)
       dist_entre_separX = divisionX[1]
-      return divisionX, dist_entre_separX
-    self.divisionX = creacion_grilla(self,xmax,ldiscos)[0]
-    self.divisionY = creacion_grilla(self,ymax,ldiscos)[0]
-    self.dist_entre_separX = creacion_grilla(self,xmax,ldiscos)[1]
+      dist_entre_separY = divisionY[1]
+      return divisionX, divisionY, dist_entre_separX, dist_entre_separY
 
-
-
-
-
-
-
-
-
-
+    self.divisionX, self.divisionY, self.dist_entre_separX, self.dist_entre_separY = creacion_grilla(self,xmax,ymax)
