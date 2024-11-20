@@ -68,7 +68,7 @@ def cambio_velocidad_colision_pares(disco1,disco2):
   nu = n/np.linalg.norm(n)
 
   #Buscamos el vector tangente unitario a los discos, el cual es perpendicular al vector normal.
-  vect = np.array([-1*nu[1],-nu[0]])
+  vect = np.array([-1*nu[1],-1*nu[0]])
 
   #Buscamos el componente paralelo a nu y vect de las velocidades iniciales, para asi tenerlos en terminos de nu y vect
 
@@ -112,15 +112,17 @@ def deteccion_colision_pares(grilla,ldiscos,cambio_velocidad,n,newt,manejo_colis
     for i in range(len(ldiscos)):
       if abs(ldiscos[i].posicionx - j) < (2*grilla.dist_entre_separX):
           discos_en_grilla.append(ldiscos[i])
-
-    for i in discos_en_grilla:
-      for k in discos_en_grilla:
-        if i == k:
+    
+    historial_discos_evaluados = []
+    for i in range(len(discos_en_grilla)):
+      for k in range(len(discos_en_grilla)):
+        if i == k or k in historial_discos_evaluados:
           pass
         else:
-          dist = np.sqrt(np.square(i.posicionx - k.posicionx) + np.square(i.posiciony - k.posiciony))
-          if dist <= i.radio + k.radio:
-            i,k = manejo_colision(i,k,cambio_velocidad,n,newt)
+          dist = np.sqrt(np.square(discos_en_grilla[i].posicionx - discos_en_grilla[k].posicionx) + np.square(discos_en_grilla[i].posiciony - discos_en_grilla[k].posiciony))
+          if dist <= discos_en_grilla[i].radio + discos_en_grilla[k].radio:
+            discos_en_grilla[i],discos_en_grilla[k] = manejo_colision(discos_en_grilla[i],discos_en_grilla[k],cambio_velocidad,n,newt)
+      historial_discos_evaluados.append(i)      
   return ldiscos
 
 
@@ -133,6 +135,33 @@ def sistema_colision_forzada_pares(disc1,disc2,cambio_velocidad,n,newt):
   #Actualizacion de la velocidad
   disc1,disc2 = cambio_velocidad(disc1,disc2)
   return disc1,disc2
+
+
+def manejo_de_colisiones_pares_BTF(disc1,disc2,cambio_velocidad,n,newt):
+  #Cambiamos las velocidades de los debido a la colision
+  disc1,disc2 = cambio_velocidad(disc1,disc2)
+  #Hacemos una subrutina de paso temporal en dt extremadamente pequeños hasta que los discos dejen
+  #de colisionar entre si con las nuevas velocidades
+  dt = newt/100
+  distancia = np.sqrt(np.square(disc1.posicionx - disc2.posicionx) + np.square(disc1.posiciony - disc2.posiciony))
+  posx1 = disc1.posicionx
+  posy1 = disc1.posiciony
+  posx2 = disc2.posicionx
+  posy2 = disc2.posiciony
+  while distancia <= disc1.radio + disc2.radio:
+    posx1 += disc1.velocidad[0] * dt
+    posy1 += disc1.velocidad[1] * dt
+    posx2 += disc2.velocidad[0] * dt
+    posy2 += disc2.velocidad[1] * dt
+    distancia = np.sqrt(np.square(posx1 - posx2) + np.square(posy1 - posy2))
+
+  disc1.posicionx = posx1
+  disc1.posiciony = posy1
+  disc2.posicionx = posx2
+  disc2.posiciony = posy2
+
+  return disc1,disc2
+
 
 def inicializacion_discos(radio, masa, velMin, velMax, grilla, num_discos, random = False, colorRand = False):
   ldiscos = []

@@ -14,9 +14,9 @@ ladohorizontal = 1
 ladovertical = 1
 
 #parametros de los discos
-numero_discos = 6
+numero_discos = 10
 masa = 1
-radio = 0.1
+radio = 0.05
 velomax = 0.1
 
 ############################### Creacion de los elementos del sistema ##################################
@@ -32,7 +32,7 @@ discos = inicializacion_discos(radio, masa, -velomax, velomax, grilla, numero_di
 
 FPS = 60
 newt = 1/FPS
-tmax = 60
+tmax = 30
 tprima = 0
 timearray = np.zeros(tmax*FPS)
 fotograma = 0
@@ -48,7 +48,8 @@ for n in range(0,tmax*FPS):
         #verificación de colisiones con las paredes
         discos[i] = deteccion_colision_pared(discos[i],caja.longitudx,caja.longitudy,newt)
     #verificacion de colisiones entre los discos
-    discos = deteccion_colision_pares(grilla,discos,cambio_velocidad_colision_pares,n,newt,sistema_colision_forzada_pares)
+    #discos = deteccion_colision_pares(grilla,discos,cambio_velocidad_colision_pares,n,newt,sistema_colision_forzada_pares)
+    discos = deteccion_colision_pares(grilla,discos,cambio_velocidad_colision_pares,n,newt,manejo_de_colisiones_pares_BTF)
     graf_discos(discos,caja,fotograma,grilla)
     fotograma += 1
 
