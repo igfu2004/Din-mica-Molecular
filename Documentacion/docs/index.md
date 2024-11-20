@@ -1,2 +1,9 @@
-# Dinamica Molecular
-Agregar intro
+# Colisiones Elásticas
+
+El estudio de la dinámica de colisiones es fundamental en diversas ramas de la física, desde la mecánica clásica hasta la física de materiales y la simulación de sistemas complejos. En particular, la simulación de colisiones de discos en un sistema cerrado representa un escenario ideal para investigar la interacción de cuerpos rígidos, la conservación de la energía y la transferencia de momento.
+
+El sistema que se aborda en este trabajo consiste en la simulación de varios discos de igual tamaño y masa que se mueven sin fricción ni rotación angular dentro de un entorno bidimensional, colisionando entre sí y con las paredes de un contenedor. El objetivo de esta simulación es modelar las colisiones de los discos, implementando un manejo adecuado de las interacciones entre ellos, de forma que se respete la conservación de la energía y el momento lineal, y que los discos no se solapen después de una colisión.
+
+En este sistema, las colisiones entre los discos se modelan como colisiones elásticas, lo que significa que tanto la energía cinética total del sistema como el momento lineal se conservan durante el proceso de colisión. Este tipo de colisión implica que, tras el choque, no hay pérdida de energía en forma de calor, sonido u otras formas de energía, y que la energía cinética total antes y después de la colisión es la misma. Este principio se deriva directamente de las leyes de conservación de la física clásica, que rigen los sistemas aislados.
+
+Cuando dos discos colisionan, su interacción puede ser descrita mediante la conservación del momento lineal y la conservación de la energía cinética. El momento lineal de un sistema se define como el producto de la masa y la velocidad de cada objeto, y para un sistema aislado, el momento total antes de la colisión debe ser igual al momento total después del choque.
