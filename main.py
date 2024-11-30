@@ -19,6 +19,9 @@ masa = 1
 radio = 0.05
 velomax = 0.1
 
+#tiempo de simulacion en segundos
+tmax = 30
+
 ############################### Creacion de los elementos del sistema ##################################
 discos = []
 
@@ -32,24 +35,22 @@ discos = inicializacion_discos(radio, masa, -velomax, velomax, grilla, numero_di
 
 FPS = 60
 newt = 1/FPS
-tmax = 30
-tprima = 0
 timearray = np.zeros(tmax*FPS)
+
+
 fotograma = 0
 
 for n in range(0,tmax*FPS):
-    #actualizacion de posiciones
-    #tprima es el tiempo actual del sistema
-    tprima = n*newt
-    timearray[n] = tprima
+    #actualizacion del tiempo
+    timearray[n] = n*newt
     #actualizacion de las posiciones de los discos
     for i in range(numero_discos):
         discos[i] = nueva_posicion(discos[i],newt)
-        #verificación de colisiones con las paredes
-        discos[i] = deteccion_colision_pared(discos[i],caja.longitudx,caja.longitudy,newt)
+    
+    #Verificacion de colisiones
+    discos = colision_proxima(grilla,discos,cambio_velocidad_colision_pares,newt,manejo_de_colisiones_pares,tiempo_colision_pared,deteccion_colision_pared_con_manejo,caja.longitudx,caja.longitudy)
+
     #verificacion de colisiones entre los discos
-    #discos = deteccion_colision_pares(grilla,discos,cambio_velocidad_colision_pares,n,newt,sistema_colision_forzada_pares)
-    discos = deteccion_colision_pares(grilla,discos,cambio_velocidad_colision_pares,n,newt,manejo_de_colisiones_pares_BTF)
     graf_discos(discos,caja,fotograma,grilla)
     fotograma += 1
 

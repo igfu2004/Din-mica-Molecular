@@ -20,7 +20,36 @@ def nueva_posicion(disco, dt):
     disco.arrayposicionx = np.append(disco.arrayposicionx,posxFinal)
     disco.arrayposiciony = np.append(disco.arrayposiciony,posyFinal)
     return disco
-def deteccion_colision_pared(disco,lx,ly,newt):
+
+def tiempo_colision_pared(disco,lx,ly,newt):
+  #Esta parte viene de realizar una parametrización de la trayectoria del disco por medio de la ecuación paramétrica de la recta.
+  #Buscamos el tiempo t entre el intervalo de [0,1] en el que se causa la colisión con la pared
+
+  t = 10000000000
+
+  posicioninicial = disco.right()
+  posicionfinal = disco.right() + disco.velocidad[0]*newt
+  if posicionfinal >= lx:
+    t = (lx - disco.right())/(posicionfinal - disco.right())
+
+  posicioninicial = disco.left()
+  posicionfinal = disco.left() + disco.velocidad[0]*newt
+  if posicionfinal <= 0:
+    t = -1*disco.left()/(posicionfinal - disco.left())
+
+  posicioninicial = disco.top()
+  posicionfinal = disco.top() + disco.velocidad[1]*newt
+  if posicionfinal >= ly:
+    t = (ly - disco.top())/(posicionfinal - disco.top())
+
+  posicioninicial = disco.bottom()
+  posicionfinal = posicioninicial + disco.velocidad[1]*newt
+  if posicionfinal <= 0:
+    t = -1*disco.bottom()/(posicionfinal - disco.bottom())
+
+  return t
+
+def deteccion_colision_pared_con_manejo(disco,lx,ly,newt):
   
   #Esta parte viene de realizar una parametrización de la trayectoria del disco por medio de la ecuación paramétrica de la recta.
   #Buscamos el tiempo t entre el intervalo de [0,1] en el que se causa la colisión con la pared
@@ -60,11 +89,12 @@ def deteccion_colision_pared(disco,lx,ly,newt):
   return disco
 
 
-
-# Añadir un margen de tolerancia para evitar problemas de sobreposición
-MARGEN_TOLERANCIA = 1e-5  # ajustar este valor según lo que se necesite
-
 def cambio_velocidad_colision_pares(disco1, disco2):
+
+    # Añadir un margen de tolerancia para evitar problemas de sobreposición
+    MARGEN_TOLERANCIA = 1e-5  # ajustar este valor según lo que se necesite
+
+
     # Buscamos el vector entre el centro de los discos
     n = np.array([disco2.posicionx - disco1.posicionx, disco2.posiciony - disco1.posiciony])
 
@@ -84,7 +114,6 @@ def cambio_velocidad_colision_pares(disco1, disco2):
 
     # Normalizamos el vector de colisión
     if np.linalg.norm(n) == 0:
-        print("No se puede dividir por cero")
         nu = np.zeros_like(n)
     else:
         nu = n / np.linalg.norm(n)
@@ -121,40 +150,57 @@ def cambio_velocidad_colision_pares(disco1, disco2):
     return disco1, disco2
 
 
-def deteccion_colision_pares(grilla,ldiscos,cambio_velocidad,n,newt,manejo_colision):
-  
+def colision_proxima(grilla,ldiscos,cambio_velocidad,newt,manejo_colision,det_pared,manejo_pared,lx,ly):
   #verificación de posiciones en un grilla y en sus vecinas inmediatas sobre el eje x
   for j in grilla.divisionX:
     discos_en_grilla = []
     for i in range(len(ldiscos)):
       if abs(ldiscos[i].posicionx - j) < (2*grilla.dist_entre_separX):
           discos_en_grilla.append(ldiscos[i])
-    
-    historial_discos_evaluados = []
-    for i in range(len(discos_en_grilla)):
-      for k in range(len(discos_en_grilla)):
-        if i == k or k in historial_discos_evaluados:
+
+    #descartamos los discos que no se sobreponen en X
+    posb_colisiones = []
+    for i in discos_en_grilla:
+      for k in discos_en_grilla:
+        if i == k:
           pass
         else:
-          dist = np.sqrt(np.square(discos_en_grilla[i].posicionx - discos_en_grilla[k].posicionx) + np.square(discos_en_grilla[i].posiciony - discos_en_grilla[k].posiciony))
-          if dist <= discos_en_grilla[i].radio + discos_en_grilla[k].radio:
-            discos_en_grilla[i],discos_en_grilla[k] = manejo_colision(discos_en_grilla[i],discos_en_grilla[k],cambio_velocidad,n,newt)
-      historial_discos_evaluados.append(i)      
+          #Buscamos el tiempo hasta la siguiente colision
+          #Vemos cual es la siguiente posicion de los discos, para saber si hay colision en el siguiente fotograma
+          new_pos_ix = i.posicionx + i.velocidad[0]*newt
+          new_pos_kx = k.posicionx + k.velocidad[0]*newt
+          new_pos_iy = i.posiciony + i.velocidad[1]*newt
+          new_pos_ky = k.posiciony + k.velocidad[1]*newt
+          dist_centros_final = np.sqrt(np.square(new_pos_ix - new_pos_kx) + np.square(new_pos_iy - new_pos_ky))
+          if dist_centros_final <= i.radio + k.radio:
+            dist_centros = np.sqrt(np.square(i.posicionx - k.posicionx) + np.square(i.posiciony - k.posiciony))
+            dist_fronteras = dist_centros - i.radio - k.radio
+
+            #Buscamos el tiempo hasta la colision
+            time_colision_pares = dist_fronteras/(np.linalg.norm(i.velocidad)+np.linalg.norm(k.velocidad))
+
+            #Buscamos el tiempo hasta la colision con una pared en ambos discos
+            time_col_wall_i = det_pared(i,lx,ly,newt)
+            time_col_wall_k = det_pared(k,lx,ly,newt)
+
+            if time_colision_pares < time_col_wall_i or time_colision_pares < time_col_wall_k:
+              i,k = manejo_colision(i,k,cambio_velocidad,newt)
+
+            elif time_colision_pares > time_col_wall_i and time_colision_pares > time_col_wall_k:
+              i = manejo_pared(i,lx,ly,newt)
+              k = manejo_pared(k,lx,ly,newt)
+
+            elif time_colision_pares == time_col_wall_i or time_colision_pares == time_col_wall_k:
+              i,k = manejo_colision(i,k,cambio_velocidad,newt)
+              i = manejo_pared(i,lx,ly,newt)
+              k = manejo_pared(k,lx,ly,newt)
+
+        i = manejo_pared(i,lx,ly,newt)
+
   return ldiscos
 
 
-def sistema_colision_forzada_pares(disc1,disc2,cambio_velocidad,n,newt):
-  #Actualización de la posicion para evitar que el sistema fusione los discos
-  disc1.posicionx = disc1.arrayposicionx[n-1]
-  disc1.posiciony = disc1.arrayposiciony[n-1]
-  disc2.posicionx = disc2.arrayposicionx[n-1]
-  disc2.posiciony = disc2.arrayposiciony[n-1]
-  #Actualizacion de la velocidad
-  disc1,disc2 = cambio_velocidad(disc1,disc2)
-  return disc1,disc2
-
-
-def manejo_de_colisiones_pares_BTF(disc1,disc2,cambio_velocidad,n,newt):
+def manejo_de_colisiones_pares(disc1,disc2,cambio_velocidad,newt):
   #Cambiamos las velocidades de los debido a la colision
   disc1,disc2 = cambio_velocidad(disc1,disc2)
   #Hacemos una subrutina de paso temporal en dt extremadamente pequeños hasta que los discos dejen
