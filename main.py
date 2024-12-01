@@ -16,7 +16,7 @@ ladovertical = 1
 #parametros de los discos
 numero_discos = 10
 masa = 1
-radio = 0.05
+radio = 0.1
 velomax = 0.1
 
 #tiempo de simulacion en segundos
@@ -35,14 +35,10 @@ discos = inicializacion_discos(radio, masa, -velomax, velomax, grilla, numero_di
 
 FPS = 60
 newt = 1/FPS
-timearray = np.zeros(tmax*FPS)
-
 
 fotograma = 0
 
 for n in range(0,tmax*FPS):
-    #actualizacion del tiempo
-    timearray[n] = n*newt
     #actualizacion de las posiciones de los discos
     for i in range(numero_discos):
         discos[i] = nueva_posicion(discos[i],newt)
@@ -50,10 +46,10 @@ for n in range(0,tmax*FPS):
     #Verificacion de colisiones
     discos = colision_proxima(grilla,discos,cambio_velocidad_colision_pares,newt,manejo_de_colisiones_pares,tiempo_colision_pared,deteccion_colision_pared_con_manejo,caja.longitudx,caja.longitudy)
 
-    #verificacion de colisiones entre los discos
     graf_discos(discos,caja,fotograma,grilla)
     fotograma += 1
 
 crear_video(FPS)
 
-histo_discos(discos,timearray,tmax,newt)
+#Creacion del histograma
+histo_discos(discos,caja.longitudx,50)

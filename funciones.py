@@ -327,29 +327,30 @@ def graf_discos(discos,caja,fotograma,grilla):
   plt.savefig(os.path.join(path, f"fotograma{fotograma:04d}.png"))
   plt.close(fig)
 
-def histo_discos(discos,tiempos,tmax,newt):
+def histo_discos(discos,xmax,num_subdiv):
+ 
   path = os.getcwd()
-  plt.style.use('_mpl-gallery')
+  posiciones_x = np.linspace(discos[1].radio,xmax-discos[1].radio, num_subdiv+1)
 
-  sizex = tiempos.size
-  x = 0.5 + np.arange(sizex)
-  contador = 0
+  conteo = np.zeros(num_subdiv) 
 
-  for i in discos:
-    y = []
-    for j in range(len(i.arrayposiciony)):
-      y.append(i.arrayposicionx[j])
+  conteo_total = 0
+  for i in range(len(discos)):
+    for j in range(len(discos[i].arrayposicionx)):
+      for k in range(len(conteo)):
+        if discos[i].arrayposicionx[j] >= posiciones_x[k] and discos[i].arrayposicionx[j] < posiciones_x[k+1]: 
+          conteo[k] += 1
+          conteo_total += 1
+  maximo = np.max(conteo)/posiciones_x[1]
+  for i in range(conteo.size):
+    conteo[i] /= conteo_total
+  
+  plt.bar(posiciones_x[:-1],conteo,width=np.diff(posiciones_x), color='skyblue', edgecolor='black', alpha=0.7)
+  plt.title('Distribucion de las posiciones de los discos en el eje x')
+  plt.xlabel('Posiciones en x') 
 
-    fig, ax = plt.subplots()
 
-    ax.bar(x, y, width=1, edgecolor="blue", linewidth=0.7)
-
-    ax.set(xlim=(0, sizex),
-           ylim=(0, 1), yticks=np.arange(0, 1))
-
-    plt.savefig(os.path.join(path, f"histograma{contador:04d}.png"))
-    plt.close(fig)
-    contador +=1
+  plt.savefig(os.path.join(path, f"histograma.png"))
 
 def crear_video(fps):
   path = os.getcwd()
