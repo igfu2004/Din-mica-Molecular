@@ -14,13 +14,13 @@ ladohorizontal = 1
 ladovertical = 1
 
 #parametros de los discos
-numero_discos = 10
+numero_discos = 1
 masa = 1
-radio = 0.1
-velomax = 0.1
+radio = 0.05
+velomax = 0.2
 
 #tiempo de simulacion en segundos
-tmax = 30
+tmax = 10
 
 ############################### Creacion de los elementos del sistema ##################################
 discos = []
@@ -42,7 +42,7 @@ for n in range(0,tmax*FPS):
     #actualizacion de las posiciones de los discos
     for i in range(numero_discos):
         discos[i] = nueva_posicion(discos[i],newt)
-    
+
     #Verificacion de colisiones
     discos = colision_proxima(grilla,discos,cambio_velocidad_colision_pares,newt,manejo_de_colisiones_pares,tiempo_colision_pared,deteccion_colision_pared_con_manejo,caja.longitudx,caja.longitudy)
 

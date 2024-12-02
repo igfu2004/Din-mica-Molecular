@@ -50,7 +50,7 @@ def tiempo_colision_pared(disco,lx,ly,newt):
   return t
 
 def deteccion_colision_pared_con_manejo(disco,lx,ly,newt):
-  
+
   #Esta parte viene de realizar una parametrización de la trayectoria del disco por medio de la ecuación paramétrica de la recta.
   #Buscamos el tiempo t entre el intervalo de [0,1] en el que se causa la colisión con la pared
 
@@ -328,26 +328,27 @@ def graf_discos(discos,caja,fotograma,grilla):
   plt.close(fig)
 
 def histo_discos(discos,xmax,num_subdiv):
- 
+
   path = os.getcwd()
+  plt.style.use('default')
   posiciones_x = np.linspace(discos[1].radio,xmax-discos[1].radio, num_subdiv+1)
 
-  conteo = np.zeros(num_subdiv) 
+  conteo = np.zeros(num_subdiv)
 
   conteo_total = 0
   for i in range(len(discos)):
     for j in range(len(discos[i].arrayposicionx)):
       for k in range(len(conteo)):
-        if discos[i].arrayposicionx[j] >= posiciones_x[k] and discos[i].arrayposicionx[j] < posiciones_x[k+1]: 
+        if discos[i].arrayposicionx[j] >= posiciones_x[k] and discos[i].arrayposicionx[j] < posiciones_x[k+1]:
           conteo[k] += 1
           conteo_total += 1
   maximo = np.max(conteo)/posiciones_x[1]
   for i in range(conteo.size):
     conteo[i] /= conteo_total
-  
+
   plt.bar(posiciones_x[:-1],conteo,width=np.diff(posiciones_x), color='skyblue', edgecolor='black', alpha=0.7)
   plt.title('Distribucion de las posiciones de los discos en el eje x')
-  plt.xlabel('Posiciones en x') 
+  plt.xlabel('Posiciones en x')
 
 
   plt.savefig(os.path.join(path, f"histograma.png"))
