@@ -14,13 +14,13 @@ ladohorizontal = 1
 ladovertical = 1
 
 #parametros de los discos
-numero_discos = 200
+numero_discos = 4
 masa = 1
-radio = 0.01
+radio = 0.1
 velomax = 0.1
 
 #tiempo de simulacion en segundos
-tmax = 60
+tmax = 120
 
 ############################### Creacion de los elementos del sistema ##################################
 discos = []
@@ -46,10 +46,10 @@ for n in range(0,tmax*FPS):
     #Verificacion de colisiones
     discos = colision_proxima(grilla,discos,cambio_velocidad_colision_pares,newt,manejo_de_colisiones_pares,tiempo_colision_pared,deteccion_colision_pared_con_manejo,caja.longitudx,caja.longitudy)
 
-    #graf_discos(discos,caja,fotograma,grilla)
-    #fotograma += 1
+    graf_discos(discos,caja,fotograma,grilla)
+    fotograma += 1
 
-#crear_video(FPS)
+crear_video(FPS)
 
 #Creacion del histograma
 histo_discos(discos,caja.longitudx,50)
