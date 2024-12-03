@@ -9,10 +9,6 @@
       
       
       
-        <link rel="prev" href="../explanation/">
-      
-      
-        <link rel="next" href="../reference/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -156,11 +152,11 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../docs/index.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Colisiones Elásticas
+    index
   </span>
   
 
@@ -176,108 +172,15 @@
   
   
     <li class="md-nav__item">
-      <a href="../explanation/" class="md-nav__link">
+      <a href="../docs/explanation.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Explanation
+    explanation
   </span>
   
 
       </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-    
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Ejemplo de uso
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
-  
-  <span class="md-ellipsis">
-    Ejemplo de uso
-  </span>
-  
-
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#bibliotecas-necesarias" class="md-nav__link">
-    <span class="md-ellipsis">
-      Bibliotecas necesarias
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Bibliotecas necesarias">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#ejemplo-de-simulacion" class="md-nav__link">
-    <span class="md-ellipsis">
-      Ejemplo de Simulación
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ejemplo-de-histogramas" class="md-nav__link">
-    <span class="md-ellipsis">
-      Ejemplo de histogramas
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -289,11 +192,31 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/" class="md-nav__link">
+      <a href="../docs/tutorials.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Clases y Funciones principales
+    tutorials
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/reference.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    reference
   </span>
   
 
@@ -337,15 +260,6 @@
   
     <nav class="md-nav" aria-label="Bibliotecas necesarias">
       <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#ejemplo-de-simulacion" class="md-nav__link">
-    <span class="md-ellipsis">
-      Ejemplo de Simulación
-    </span>
-  </a>
-  
-</li>
         
           <li class="md-nav__item">
   <a href="#ejemplo-de-histogramas" class="md-nav__link">
@@ -448,13 +362,6 @@ costo realizarlas con una gran cantidad de discos. </p>
 <p>Además, en los parámetros de los discos que definimos anteriormente, cambiaríamos los valores del número de discos, además del radio (se necesitaría un menor radio ya que tenemos mayor cantidad de discos). Luego, para crear el histograma simplemente llamamos la función para esto del archivo <code>funciones.py</code>:</p>
 <pre><code class="language-python">histo_discos(discos,caja.longitudx,50)
 </code></pre>
-<h3 id="ejemplo-de-simulacion">Ejemplo de Simulación</h3>
-<p>A continuación, podemos observar un ejemplo del video que se obtendría utilizando los valores que definimos anteriormente:</p>
-<video width="300" height="200" controls>
-  <source src= "https://github.com/igfu2004/Din-mica-Molecular/raw/main/docs/video_ejemplo.mp4" type="video/mp4">
-  Tu navegador no soporta el elemento de video.
-</video>
-
 <h3 id="ejemplo-de-histogramas">Ejemplo de histogramas</h3>
 <p>A continuación, veremos un ejemplo para el resultado de histograma con 100 discos de radio 0.03, y otro para 200 discos de radio 0.01, ambos durante una simulación de 60 segundos.</p>
 <p><img src="https://github.com/igfu2004/Din-mica-Molecular/raw/main/docs/histo_100.png" alt="Histograma de las posiciones en x para 100 discos" width="600"/></p>
