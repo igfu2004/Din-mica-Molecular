@@ -335,16 +335,11 @@ def histo_discos(discos,xmax,num_subdiv):
 
   conteo = np.zeros(num_subdiv)
 
-  conteo_total = 0
   for i in range(len(discos)):
     for j in range(len(discos[i].arrayposicionx)):
       for k in range(len(conteo)):
         if discos[i].arrayposicionx[j] >= posiciones_x[k] and discos[i].arrayposicionx[j] < posiciones_x[k+1]:
           conteo[k] += 1
-          conteo_total += 1
-  maximo = np.max(conteo)/posiciones_x[1]
-  for i in range(conteo.size):
-    conteo[i] /= conteo_total
 
   plt.bar(posiciones_x[:-1],conteo,width=np.diff(posiciones_x), color='skyblue', edgecolor='black', alpha=0.7)
   plt.title('Distribucion de las posiciones de los discos en el eje x')
