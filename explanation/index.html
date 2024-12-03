@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.36">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.06209087.min.css">
       
       
 
@@ -396,24 +396,60 @@
 
 <h2 id="dinamica-molecular">Dinámica Molecular</h2>
 <h1 id="conservacion-del-momento">Conservación del momento:</h1>
+<p>El momento lineal, <span class="arithmatex">\( p = mv \)</span>, es una cantidad vectorial que se conserva en interacciones entre partículas en ausencia de fuerzas externas. Antes y después de la colisión, la suma de los momentos debe ser igual. Esta ecuación es válida para cualquier tipo de colisión: elástica o inelástica.</p>
 <div class="arithmatex">\[
 m_1 v_1 + m_2 v_2 = m_1 v_1' + m_2 v_2'
 \]</div>
+<p>Esta ecuación describe el principio de conservación del momento lineal en un sistema aislado, donde no actúan fuerzas externas. </p>
+<ul>
+<li>
+<p><span class="arithmatex">\(m_1\)</span> y <span class="arithmatex">\(m_2\)</span> : masas de los objetos.</p>
+</li>
+<li>
+<p><span class="arithmatex">\(v_1\)</span> y <span class="arithmatex">\(v_2\)</span> : velocidades iniciales de los objetos antes de la colisión.</p>
+</li>
+<li>
+<p><span class="arithmatex">\(v_1'\)</span> y <span class="arithmatex">\(v_2'\)</span> : velocidades finales después de la colisión.</p>
+</li>
+</ul>
 <h1 id="conservacion-de-la-energia-cinetica">Conservación de la energía cinética:</h1>
+<p>La conservación de la energía cinética, junto con la conservación del momento, permite calcular las velocidades finales en una colisión elástica. Si la colisión es inelástica, parte de la energía cinética inicial se transforma en otras formas de energía, como calor o deformaciones.</p>
 <div class="arithmatex">\[
 \frac{1}{2} m_1 v_1^2 + \frac{1}{2} m_2 v_2^2 = \frac{1}{2} m_1 v_1'^2 + \frac{1}{2} m_2 v_2'^2
 \]</div>
+<p>Esta ecuación aplica únicamente a colisiones elásticas, en las que no hay pérdida de energía cinética en el sistema.</p>
+<ul>
+<li><span class="arithmatex">\(\frac{1}{2} m v^2\)</span> : es la energía cinética de un objeto</li>
+<li>La suma de las energías cinéticas antes de la colisión es igual a la suma de las energías cinéticas después de la colisión.</li>
+</ul>
 <h1 id="velocidades-finales-despues-de-la-colision">Velocidades finales después de la colisión:</h1>
-<p>[
+<div class="arithmatex">\[
 v_1' = \frac{v_1 (m_1 - m_2) + 2 m_2 v_2}{m_1 + m_2}
-]
-[
+\]</div>
+<div class="arithmatex">\[
 v_2' = \frac{v_2 (m_2 - m_1) + 2 m_1 v_1}{m_1 + m_2}
-]</p>
+\]</div>
+<p>Estas fórmulas son el resultado de resolver conjuntamente las ecuaciones de conservación del momento lineal y conservación de la energía cinética para una colisión elástica en una dimensión.</p>
+<ol>
+<li>A partir de <span class="arithmatex">\(m_1 v_1 + m_2 v_2 = m_1 v_1' + m_2 v_2'
+\)</span> se obtiene una relación entre <span class="arithmatex">\(v_1'\)</span> y <span class="arithmatex">\(v_2'\)</span>.</li>
+<li>Se combina con la ecuación de conservación de la energía cinética: <span class="arithmatex">\(\frac{1}{2} m_1 v_1^2 + \frac{1}{2} m_2 v_2^2 = \frac{1}{2} m_1 v_1'^2 + \frac{1}{2} m_2 v_2'^2
+\)</span>.</li>
+<li>Se resuelve el sistema para <span class="arithmatex">\(v_1'\)</span> y <span class="arithmatex">\(v_2'\)</span>.</li>
+</ol>
+<p>Estas expresiones muestran que las velocidades finales dependen tanto de las velocidades iniciales como de las masas de los objetos.</p>
 <h1 id="ecuacion-para-la-posicion">Ecuación para la posición:</h1>
+<p>Esta ecuación proviene de la cinemática en una dimensión para un movimiento con velocidad constante:</p>
 <div class="arithmatex">\[
 x_f = x_i + v_x t
 \]</div>
+<p>Es la ecuación fundamental para describir el movimiento rectilíneo uniforme (MRU). En este caso, la velocidad es constante, por lo que la posición cambia linealmente con el tiempo. </p>
+<ul>
+<li><span class="arithmatex">\(x_f\)</span>: posición final del objeto.</li>
+<li><span class="arithmatex">\(x_i\)</span>: posición inicial del objeto.</li>
+<li><span class="arithmatex">\(v_x\)</span>: velocidad en la dirección <span class="arithmatex">\(x\)</span> (constante).</li>
+<li><span class="arithmatex">\(t\)</span>: tiempo transcurrido.</li>
+</ul>
 
 
 
@@ -463,7 +499,7 @@ x_f = x_i + v_x t
     <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      <script src="../assets/javascripts/bundle.56dfad97.min.js"></script>
       
         <script src="../javascripts/mathjax.js"></script>
       
