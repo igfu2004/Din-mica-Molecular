@@ -29,7 +29,7 @@ import os
 
 Luego, en el archivo `main.py` procedemos a establecer los parámetros con los que queremos trabajar:
 
-Asumamos que queremos llevar a cabo la simulación de colisiones elásticas con 10 discos distribuidos de manera aleatoria en una caja con dimensiones 1x1, con colores también aleatorios. Además, queremos observar visualmente la simulación mediante un video de 2 minutos.
+Asumamos que queremos llevar a cabo la simulación de colisiones elásticas con 10 discos distribuidos de manera aleatoria en una caja con dimensiones 1x1, con colores también aleatorios. Además, queremos observar visualmente la simulación mediante un video de 30 segundos.
 
 En el archivo `main.py`, vamos a importar las clases y funciones que se definieron en los archivos `clases.py` y `funciones.py`, cuyo contenido con su respectiva documentación se encuentra en el apartado de [reference](reference.md).
 
@@ -50,7 +50,7 @@ numero_discos = 10
 masa = 1
 radio = 0.05
 velomax = 0.2
-tmax = 120
+tmax = 30
 ```
 
 Luego, creamos los elementos del sistema que vamos a estudiar. Es importante tomar en cuenta que en este caso estamos llamando a las clases del archivo `clases.py` y a una función del archivo `funciones.py` para inicializar los discos, estos discos se guardan en una lista que vamos a necesitar para las funciones que manejan la colisión y las gráficas. Es importante que existen distintas opciones para cómo se inicializan los discos. En los últimos dos parámetros de la
@@ -95,6 +95,12 @@ Además, en los parámetros de los discos que definimos anteriormente, cambiarí
 histo_discos(discos,caja.longitudx,50)
 ```
 
+### Ejemplo de Simulación
+A continuación, podemos observar un ejemplo del video que se obtendría utilizando los valores que definimos anteriormente:
+<video width="300" height="200" controls>
+  <source src= "https://github.com/igfu2004/Din-mica-Molecular/raw/main/docs/video_ejemplo.mp4" type="video/mp4">
+  Tu navegador no soporta el elemento de video.
+</video>
 
 ### Ejemplo de histogramas
 A continuación, veremos un ejemplo para el resultado de histograma con 100 discos de radio 0.03, y otro para 200 discos de radio 0.01, ambos durante una simulación de 60 segundos.
