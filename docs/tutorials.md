@@ -103,9 +103,8 @@ A continuación, podemos observar un ejemplo del video que se obtendría utiliza
 </video>
 
 ### Ejemplo de histogramas
-A continuación, veremos un ejemplo para el resultado de histograma con 100 discos de radio 0.03, y otro para 200 discos de radio 0.01, ambos durante una simulación de 60 segundos.
+A continuación, veremos un ejemplo para el resultado de histograma con 4 discos de radio 0.09, durante una simulación de 60 segundos.
 
-<img src="https://github.com/igfu2004/Din-mica-Molecular/raw/main/docs/histo_100.png" alt="Histograma de las posiciones en x para 100 discos" width="600"/>
+<img src="https://github.com/igfu2004/Din-mica-Molecular/raw/main/docs/histo004.png" alt="Histograma de las posiciones en x para 100 discos" width="600"/>
 
-<img src="https://github.com/igfu2004/Din-mica-Molecular/raw/main/docs/histo_200.png" alt="Histograma de las posiciones en x para 200 discos" width="600"/>
 
