@@ -20,7 +20,7 @@ radio = 0.1
 velomax = 0.1
 
 #tiempo de simulacion en segundos
-tmax = 120
+tmax = 60
 
 ############################### Creacion de los elementos del sistema ##################################
 discos = []

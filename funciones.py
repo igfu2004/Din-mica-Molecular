@@ -331,17 +331,12 @@ def histo_discos(discos,xmax,num_subdiv):
 
   path = os.getcwd()
   plt.style.use('default')
-  posiciones_x = np.linspace(discos[1].radio,xmax-discos[1].radio, num_subdiv+1)
+  posiciones_x = np.concatenate([disco.arrayposicionx for disco in discos])
 
-  conteo = np.zeros(num_subdiv)
-
-  for i in range(len(discos)):
-    plt.hist(discos[i].arrayposicionx,num_subdiv,color = [0,1,1], rwidth=0.9)
-  
-  #plt.hist(discos[1].arrayposicionx,num_subdiv,color = [0,0,1], rwidth=0.9)
-  plt.title('Distribucion de las posiciones de los discos en el eje x')
+  plt.hist(posiciones_x,num_subdiv,color = [0,1,1], rwidth=0.9)
+  plt.title('Distribucion de las posiciones de los discos')
   plt.xlabel('Posiciones en x')
-
+  plt.ylabel('Numero de discos')
 
   plt.savefig(os.path.join(path, f"histograma.png"))
 
