@@ -327,7 +327,7 @@ def graf_discos(discos,caja,fotograma,grilla):
   plt.savefig(os.path.join(path, f"fotograma{fotograma:04d}.png"))
   plt.close(fig)
 
-def histo_discos(discos,xmax,num_subdiv):
+def histo_discos(discos,num_subdiv):
 
   path = os.getcwd()
   plt.style.use('default')

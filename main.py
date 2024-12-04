@@ -52,4 +52,4 @@ for n in range(0,tmax*FPS):
 crear_video(FPS)
 
 #Creacion del histograma
-histo_discos(discos,caja.longitudx,50)
+histo_discos(discos,50)

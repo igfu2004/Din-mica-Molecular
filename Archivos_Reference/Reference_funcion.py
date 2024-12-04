@@ -461,38 +461,25 @@ def graf_discos(discos,caja,fotograma,grilla):
     plt.close(fig)
 
 
-def histo_discos(discos,tiempos,tmax,newt):
+def histo_discos(discos,num_subdiv):
     """`histo_discos(discos,tiempos,tmax,newt)`
 
     Esta función crea un histograma de las posiciones de los centros a lo largo del eje x.
 
     Args:
         discos (Disco): Son todas las caracteristicas de los discos    inicializadas en la clase Disco.
-        tiempos (array): Un array que contiene los valores de tiempo.
-        tmax (int): Representa el valor máximo del tiempo.
-        newt (float): Representa 1 dividido entre la cantidad de FPS.
-
+        num_subdiv (float): Representa el número de subdivisiones
     """
     path = os.getcwd()
     plt.style.use('default')
-    posiciones_x = np.linspace(discos[1].radio,xmax-discos[1].radio, num_subdiv+1)
+    posiciones_x = np.concatenate([disco.arrayposicionx for disco in discos])
 
-    conteo = np.zeros(num_subdiv)
-
-    conteo_total = 0
-    for i in range(len(discos)):
-        for j in range(len(discos[i].arrayposicionx)):
-            for k in range(len(conteo)):
-                if discos[i].arrayposicionx[j] >= posiciones_x[k] and discos[i].arrayposicionx[j] < posiciones_x[k+1]:
-                    conteo[k] += 1
-                    conteo_total += 1
-    maximo = np.max(conteo)/posiciones_x[1]
-    for i in range(conteo.size):
-        conteo[i] /= conteo_total
-
-    plt.bar(posiciones_x[:-1],conteo,width=np.diff(posiciones_x), color='skyblue', edgecolor='black', alpha=0.7)
-    plt.title('Distribucion de las posiciones de los discos en el eje x')
+    plt.hist(posiciones_x,num_subdiv,color = [0,1,1], rwidth=0.9)
+    plt.title('Distribucion de las posiciones de los discos')
     plt.xlabel('Posiciones en x')
+    plt.ylabel('Numero de discos')
+    plt.savefig(os.path.join(path, f"histograma.png"))
+
 
 def crear_video(fps):
     """`crear_video(fps)`
